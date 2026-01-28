@@ -49,7 +49,7 @@ public class ChoiceFragment extends Fragment {
                 .getSupportFragmentManager()
                 .beginTransaction();
         transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        transaction.replace(R.id.fragment_container, new EarthFragment());
+        transaction.replace(R.id.fragment_container, new EarthSceneFragment());
         transaction.addToBackStack(null);
         transaction.commit();
     }
