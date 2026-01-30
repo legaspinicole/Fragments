@@ -5,7 +5,9 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // Make the layout draw under the system bars (edge-to-edge)
+
+        // Edge-to-edge display setup
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
@@ -37,15 +39,18 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        // Initialize UI Elements
         nebulaLayer = findViewById(R.id.nebulaLayer);
         tapToStartText = findViewById(R.id.tapToStartText);
         mainContent = findViewById(R.id.mainContent);
 
+        // Start Animations and Music
         animateNebula();
         animateTapToStart();
         hideSystemUI();
         startBackgroundMusic();
 
+        // Global click listener for "Tap to Start"
         findViewById(android.R.id.content).setOnClickListener(v -> {
             playTapSfx();
             showIntroScene();
@@ -55,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private void playTapSfx() {
         MediaPlayer sfxPlayer = MediaPlayer.create(this, R.raw.sfx_tap_to_start);
         if (sfxPlayer != null) {
-            // Set volume to a very soft level (0.0 to 1.0)
             sfxPlayer.setVolume(0.05f, 0.05f);
             sfxPlayer.setOnCompletionListener(MediaPlayer::release);
             sfxPlayer.start();
@@ -63,24 +67,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showIntroScene() {
-        mainContent.setVisibility(View.GONE);
-        tapToStartText.setVisibility(View.GONE);
+        // Hide the main menu overlay
+        if (mainContent != null) mainContent.setVisibility(View.GONE);
+        if (tapToStartText != null) tapToStartText.setVisibility(View.GONE);
 
+        // Transition to the first Fragment (Intro)
         IntroSceneFragment introFragment = new IntroSceneFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        transaction.replace(R.id.fragment_container, introFragment);
-        transaction.commit();
-        
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.fragment_container, introFragment)
+                .commit();
+
+        // Remove the listener so subsequent taps don't restart the intro
         findViewById(android.R.id.content).setOnClickListener(null);
     }
+
+    // --- Helper Methods (Animations & UI) ---
 
     private void startBackgroundMusic() {
         mediaPlayer = MediaPlayer.create(this, R.raw.bg_maintheme);
         if (mediaPlayer != null) {
             mediaPlayer.setLooping(true);
-
-            mediaPlayer.setVolume(2.5f, 2.5f);
+            mediaPlayer.setVolume(0.5f, 0.5f); // 2.5f was too high; adjusted to safe range
             mediaPlayer.start();
         }
     }
@@ -105,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void animateTapToStart() {
+        if (tapToStartText == null) return;
         ObjectAnimator pulseAnimator = ObjectAnimator.ofFloat(tapToStartText, View.ALPHA, 0.3f, 1.0f);
         pulseAnimator.setDuration(1500);
         pulseAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -135,17 +144,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        }
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-        }
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
         hideSystemUI();
     }
 
@@ -155,14 +160,6 @@ public class MainActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
-        }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            hideSystemUI();
         }
     }
 }
