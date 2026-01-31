@@ -17,6 +17,7 @@ import android.media.MediaPlayer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class ChoicesSceneFragment extends Fragment {
 
@@ -54,6 +55,10 @@ public class ChoicesSceneFragment extends Fragment {
         setupChoiceHover(choice1);
         setupChoiceHover(choice2);
         setupChoiceHover(choice3);
+        
+        choice1.setOnClickListener(v -> goToEarthScene());
+        choice2.setOnClickListener(v -> goToEarthScene());
+        choice3.setOnClickListener(v -> goToEarthScene());
 
         return view;
     }
@@ -114,10 +119,16 @@ public class ChoicesSceneFragment extends Fragment {
             }
             return false;
         });
-        
-        choice.setOnClickListener(v -> {
-            // Handle choice selection
-        });
+    }
+    
+    private void goToEarthScene() {
+        if (getActivity() != null) {
+            EarthSceneFragment earthSceneFragment = new EarthSceneFragment();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            transaction.replace(R.id.fragment_container, earthSceneFragment);
+            transaction.commit();
+        }
     }
 
     @Override

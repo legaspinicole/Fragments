@@ -15,6 +15,26 @@
         android:src="@drawable/earth"
         android:visibility="invisible" />
 
+    <ImageView
+        android:id="@+id/earthCrackImage"
+        android:layout_width="462dp"
+        android:layout_height="411dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/earth_crack"
+        android:visibility="invisible"
+        android:alpha="0" />
+
+    <ImageView
+        android:id="@+id/earthExplodeImage"
+        android:layout_width="462dp"
+        android:layout_height="411dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/earth_explode"
+        android:visibility="invisible"
+        android:alpha="0.6" />
+
     <LinearLayout
         android:id="@+id/dialogueContainer"
         android:layout_width="match_parent"
@@ -40,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/home_video"
-                android:text="SOMETHING'S WRONG..."
+                android:text="&quot;SOMETHING'S WRONG...&quot;"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
@@ -141,5 +161,13 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/blackFlashView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:alpha="0"
+        android:visibility="gone" />
 
 </FrameLayout>
