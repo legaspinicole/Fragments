@@ -348,6 +348,15 @@ public class EarthSceneFragment extends Fragment {
     }
 
     private void startShakeWithExplosionOverlay() {
+        // Play cracking sound during violent shake before explosion
+        if (getContext() != null) {
+            MediaPlayer crackingBeforeExplosion = MediaPlayer.create(getContext(), R.raw.sfx_cracking);
+            if (crackingBeforeExplosion != null) {
+                crackingBeforeExplosion.setVolume(0.25f, 0.25f);
+                crackingBeforeExplosion.start();
+            }
+        }
+        
         earthCrackImage.setVisibility(View.VISIBLE);
 
         ObjectAnimator shakeCrackX = ObjectAnimator.ofFloat(earthCrackImage, "translationX",
@@ -494,7 +503,19 @@ public class EarthSceneFragment extends Fragment {
 
         speakerName.animate().alpha(1f).setDuration(800).start();
         
-        typeText("\"YOU MAY FEEL LIKE YOUR WORLD...\"", null);
+        typeText("\"YOU MAY FEEL LIKE YOUR WORLD...\"", () -> 
+            new Handler(Looper.getMainLooper()).postDelayed(this::goToEarthToScene, 2000)
+        );
+    }
+
+    private void goToEarthToScene() {
+        if (getActivity() != null) {
+            androidx.fragment.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            transaction.replace(R.id.fragment_container, new EarthToSceneFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
     
     private void typeText(String text, @Nullable Runnable onComplete) {
