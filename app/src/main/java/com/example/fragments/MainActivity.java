@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView nebulaLayer;
     private TextView tapToStartText;
-    private View mainContent;
+    private View mainContent;   
     private MediaPlayer mediaPlayer;
 
     @Override
