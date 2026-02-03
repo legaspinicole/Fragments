@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_nebula">
+
+    <com.example.fragments.PixelStarView
+        android:id="@+id/starView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/earthExplodeImage"
+        android:layout_width="462dp"
+        android:layout_height="411dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="40dp"
+        android:alpha="0.6"
+        android:scaleType="fitCenter"
+        android:src="@drawable/earth_explode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/questionContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="90dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:id="@+id/questionBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/dialog_background"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/questionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/home_video"
+                android:text="THIS FRAGMENT FORGOT HOW TO STOP."
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/choicesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="40dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/choice1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/choice_button_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/home_video"
+                android:gravity="center"
+                android:text="I NEED TO SLOW DON."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/choice2"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/choice_button_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/home_video"
+                android:gravity="center"
+                android:text="EVERYTHING FEELS RUSHED."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/choice3"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/choice_button_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/home_video"
+                android:gravity="center"
+                android:text="LET'S REST FOR A MOMENT."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

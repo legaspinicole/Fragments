@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_nebula">
+
+    <com.example.fragments.PixelStarView
+        android:id="@+id/starView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/dialog_background"
+        android:fontFamily="@font/home_video"
+        android:padding="20dp"
+        android:text="RESTORE EARTH'S FRAGMENTS"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/earthImage"
+        android:layout_width="450dp"
+        android:layout_height="516dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/earth_crack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Spring Icon (Top Left) -->
+
+    <!-- Summer Icon (Top Right) -->
+
+    <!-- Autumn Icon (Bottom Left) -->
+
+    <!-- Winter Icon (Bottom Right) -->
+
+    <ImageView
+        android:id="@+id/springIcon"
+        android:layout_width="135dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="232dp"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/spring"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/summerIcon"
+        android:layout_width="135dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="232dp"
+        android:layout_marginEnd="32dp"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/summer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/autumnIcon"
+        android:layout_width="135dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="208dp"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/autumn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/winterIcon"
+        android:layout_width="135dp"
+        android:layout_height="125dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="208dp"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/winter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/fragmentCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:fontFamily="@font/home_video"
+        android:text="0/4 FRAGMENTS RESTORED"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
