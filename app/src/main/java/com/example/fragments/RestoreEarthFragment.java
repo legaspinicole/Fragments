@@ -4,8 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Rect;
@@ -447,7 +446,7 @@ public class RestoreEarthFragment extends Fragment {
         // Get current translation and move up an additional amount
         float currentTranslation = earthContainer.getTranslationY();
         ObjectAnimator moveUp = ObjectAnimator.ofFloat(earthContainer, "translationY", 
-                currentTranslation, currentTranslation - 100f);
+                currentTranslation, currentTranslation - 220f);
         moveUp.setDuration(1200);
         moveUp.setInterpolator(new AccelerateDecelerateInterpolator());
         moveUp.addListener(new AnimatorListenerAdapter() {
@@ -558,9 +557,27 @@ public class RestoreEarthFragment extends Fragment {
     }
 
     private void setupFinalChoiceActions() {
-        if (choiceRevisit != null) choiceRevisit.setOnClickListener(v -> goToEarthScene());
-        if (choiceNewJourney != null) choiceNewJourney.setOnClickListener(v -> goToEarthScene());
-        if (choiceStay != null) choiceStay.setOnClickListener(v -> goToEarthScene());
+        if (choiceRevisit != null) choiceRevisit.setOnClickListener(v -> goToRestoreEarth());
+        if (choiceNewJourney != null) choiceNewJourney.setOnClickListener(v -> goToAppStart());
+        if (choiceStay != null) choiceStay.setOnClickListener(v -> {});  // Do nothing
+    }
+
+    private void goToRestoreEarth() {
+        if (getActivity() != null) {
+            RestoreEarthFragment restoreEarthFragment = new RestoreEarthFragment();
+            androidx.fragment.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            transaction.replace(R.id.fragment_container, restoreEarthFragment);
+            transaction.commit();
+        }
+    }
+
+    private void goToAppStart() {
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
     }
 
     private void goToEarthScene() {
