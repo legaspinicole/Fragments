@@ -21,6 +21,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,17 @@ import java.util.Map;
 import java.util.Set;
 
 public class SummerGameFragment extends DialogFragment {
+
+    @NonNull
+    @Override
+    public android.app.Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        android.app.Dialog dialog = super.onCreateDialog(savedInstanceState);
+        // Remove dialog animations for seamless appearance
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(android.R.style.Animation);
+        }
+        return dialog;
+    }
 
     private TextView tvFooterStatus;
     private final Set<Integer> clickedIds = new HashSet<>();
@@ -83,6 +95,11 @@ public class SummerGameFragment extends DialogFragment {
                     if (entry.getValue() == sampleId) {
                         int buttonId = entry.getKey();
 
+                        // If already tapped before load finished, don't start the sound
+                        if (clickedIds.contains(buttonId)) {
+                            break;
+                        }
+
                         // Play immediately with Loop set to -1 (Infinite)
                         int streamId = pool.play(sampleId, 0.5f, 0.5f, 1, -1, 1.0f);
 
@@ -126,6 +143,8 @@ public class SummerGameFragment extends DialogFragment {
 
     private void handleIconClick(ImageButton btn) {
         int id = btn.getId();
+        // Disable immediately to prevent rapid-tap issues
+        btn.setEnabled(false);
         if (!clickedIds.contains(id)) {
             clickedIds.add(id);
 
@@ -141,7 +160,6 @@ public class SummerGameFragment extends DialogFragment {
             matrix.setSaturation(0);
             btn.setColorFilter(new ColorMatrixColorFilter(matrix));
             btn.setAlpha(0.2f);
-            btn.setEnabled(false);
 
             updateStatusText();
 
@@ -169,16 +187,108 @@ public class SummerGameFragment extends DialogFragment {
             tvFooterStatus.setTextColor(Color.GREEN);
         }
 
-        // 2. Wait 1 second (1000ms) so user sees the success message, then switch
+        // 2. Wait 1 second (1000ms) so user sees the success message, then seamless transition
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            if (isAdded()) { // Check if fragment is still active
-                dismiss();
-                SummerRestoredFragment restoredFragment = new SummerRestoredFragment();
-                restoredFragment.show(getParentFragmentManager(), "SummerRestored");
+            if (isAdded() && getView() != null) {
+                showRestoredOverlay();
             }
         }, 1000);
     }
+    
+    private void showRestoredOverlay() {
+        View rootView = getView();
+        if (rootView == null || getContext() == null) return;
+        
+        // First, hide all the game UI elements
+        rootView.findViewById(R.id.dialogBox).setVisibility(View.GONE);
+        View tvStatus = rootView.findViewById(R.id.tvFooterStatus);
+        if (tvStatus != null) tvStatus.setVisibility(View.GONE);
+        View tvSubtitle = rootView.findViewById(R.id.tvSubtitle);
+        if (tvSubtitle != null) tvSubtitle.setVisibility(View.GONE);
+        View gridContainer = rootView.findViewById(R.id.gridContainer);
+        if (gridContainer != null) gridContainer.setVisibility(View.GONE);
+        
+        // Inflate the restored layout directly into this fragment
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View restoredView = inflater.inflate(R.layout.fragment_restored, (ViewGroup) rootView, false);
+        
+        // Ensure the restored view has a solid background
+        restoredView.setBackgroundColor(Color.BLACK);
+        
+        // Add it to the root view
+        ((ViewGroup) rootView).addView(restoredView);
+        
+        // Animate the dialog container
+        View dialogContainer = restoredView.findViewById(R.id.dialogContainer);
+        if (dialogContainer != null) {
+            dialogContainer.setScaleX(0f);
+            dialogContainer.setScaleY(0f);
+            dialogContainer.setAlpha(0f);
+            
+            dialogContainer.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .alpha(1f)
+                    .setDuration(600)
+                    .setStartDelay(100)
+                    .setInterpolator(new OvershootInterpolator())
+                    .start();
+        }
+        
+        // Setup sun animation
+        ImageView sun = restoredView.findViewById(R.id.iconSun);
+        if (sun != null) {
+            ObjectAnimator rotate = ObjectAnimator.ofFloat(sun, "rotationY", 0f, 360f);
+            rotate.setDuration(6000);
+            rotate.setRepeatCount(ValueAnimator.INFINITE);
+            rotate.setInterpolator(new LinearInterpolator());
+            rotate.start();
+        }
+        
+        // Click to transition back to RestoreEarthFragment with white fade
+        restoredView.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                restoredView.setEnabled(false);
+                RestoreEarthFragment.markSeasonRestored(getContext(), "Summer");
+                // Create white flash overlay
+                View whiteFlash = new View(getContext());
+                whiteFlash.setBackgroundColor(Color.WHITE);
+                whiteFlash.setAlpha(0f);
+                
+                // Add to root view
+                ViewGroup overlayContainer = (ViewGroup) getView();
+                if (overlayContainer != null) {
+                    overlayContainer.addView(whiteFlash, new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
+                    
+                    // Animate white fade in and restored view fade out
+                    restoredView.animate()
+                            .alpha(0f)
+                            .setDuration(350)
+                            .start();
 
+                    whiteFlash.animate()
+                            .alpha(1f)
+                            .setDuration(350)
+                            .withEndAction(() -> {
+                                // Dismiss and transition after white fade completes
+                                dismiss();
+                                if (getActivity() != null) {
+                                    androidx.fragment.app.FragmentTransaction transaction = getActivity()
+                                            .getSupportFragmentManager()
+                                            .beginTransaction();
+                                    transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                                    transaction.replace(R.id.fragment_container, new RestoreEarthFragment());
+                                    transaction.addToBackStack(null);
+                                    transaction.commit();
+                                }
+                            })
+                            .start();
+                }
+            }
+        });
+    }
     private void startWaveAnimation(View view) {
         View bg = view.findViewById(R.id.backgroundLayer);
         if (bg != null) {
@@ -224,7 +334,8 @@ public class SummerGameFragment extends DialogFragment {
                 window.getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
             }
 
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            // Use BLACK background instead of transparent to hide the nebula behind
+            window.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
             View decor = window.getDecorView();

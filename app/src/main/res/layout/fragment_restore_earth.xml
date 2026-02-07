@@ -30,16 +30,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/earthImage"
+    <FrameLayout
+        android:id="@+id/earthContainer"
         android:layout_width="450dp"
         android:layout_height="516dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/earth_crack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/earthImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/earth_seasons" />
+
+        <ImageView
+            android:id="@+id/earthSpringReveal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/earth_seasons"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/earthSummerReveal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/earth_seasons"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/earthAutumnReveal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/earth_seasons"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/earthWinterReveal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/earth_seasons"
+            android:visibility="invisible" />
+
+    </FrameLayout>
 
     <!-- Spring Icon (Top Left) -->
 
@@ -101,7 +140,7 @@
         android:id="@+id/fragmentCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="130dp"
         android:fontFamily="@font/home_video"
         android:text="0/4 FRAGMENTS RESTORED"
         android:textColor="#FFFFFF"
@@ -109,5 +148,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/restoreEarthButton"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/restore_earth_button_background"
+        android:backgroundTint="@null"
+        android:fontFamily="@font/home_video"
+        android:text="RESTORE EARTH"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Post-restoration dialogue (characters and dialogue box) -->
+    <include layout="@layout/view_post_restoration_dialogue" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

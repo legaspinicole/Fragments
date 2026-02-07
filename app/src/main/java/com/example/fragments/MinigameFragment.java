@@ -39,17 +39,8 @@ public class MinigameFragment extends Fragment {
     }
 
     private void completeMinigame() {
-        // Pop back to RestoreEarthFragment and increment counter
-        RestoreEarthFragment parent = (RestoreEarthFragment) getParentFragment();
-        if (parent == null && getActivity() != null) {
-            // Try to find the parent in the fragment manager
-            parent = (RestoreEarthFragment) getActivity().getSupportFragmentManager()
-                    .findFragmentByTag("RestoreEarthFragment");
-        }
-
-        if (parent != null) {
-            parent.incrementFragmentCounter();
-        }
+        // Mark spring as restored
+        RestoreEarthFragment.markSeasonRestored(getContext(), "Spring");
 
         // Navigate back
         if (getActivity() != null) {

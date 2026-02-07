@@ -31,6 +31,17 @@ import androidx.fragment.app.DialogFragment;
 
 public class SummerFragment extends DialogFragment {
 
+    @NonNull
+    @Override
+    public android.app.Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        android.app.Dialog dialog = super.onCreateDialog(savedInstanceState);
+        // Remove dialog animations for seamless appearance/disappearance
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(android.R.style.Animation);
+        }
+        return dialog;
+    }
+
     private Handler typingHandler = new Handler(Looper.getMainLooper());
     private Runnable typingRunnable;
     private MediaPlayer typingPlayer;
@@ -150,21 +161,28 @@ public class SummerFragment extends DialogFragment {
 
     private void handleSelection() {
         stopTypingSfx();
-        View view = getView();
-        if (view != null) {
-            view.animate().alpha(0f).scaleX(0.95f).scaleY(0.95f).setDuration(300).withEndAction(() -> {
-                dismiss();
-                openGameFragment();
-            }).start();
-        } else {
-            dismiss();
-            openGameFragment();
-        }
-    }
-
-    private void openGameFragment() {
+        
+        // Show game fragment immediately for seamless transition
         SummerGameFragment gameFragment = new SummerGameFragment();
         gameFragment.show(getParentFragmentManager(), "SummerGame");
+        
+        // Give a tiny delay for the game fragment to render, then fade out this one
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            View view = getView();
+            if (view != null && isAdded()) {
+                view.animate()
+                        .alpha(0f)
+                        .setDuration(200)
+                        .withEndAction(() -> {
+                            if (isAdded()) {
+                                dismiss();
+                            }
+                        })
+                        .start();
+            } else if (isAdded()) {
+                dismiss();
+            }
+        }, 50);
     }
 
     private void showChoices() {

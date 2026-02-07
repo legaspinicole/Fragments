@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_autumn">
+
+    <!-- Falling leaves at the very back -->
+    <FrameLayout
+        android:id="@+id/leafContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!-- Main ViewFlipper -->
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <!-- HOME PAGE -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/autumnTitle"
+                android:layout_width="341dp"
+                android:layout_height="136dp"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/dialog_background"
+                android:fontFamily="@font/home_video"
+                android:gravity="center"
+                android:text="@string/autumn_nfragment"
+                android:textColor="#FFFFFF"
+                android:textSize="38sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:id="@+id/signalFade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/signal_fade"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/home_video"
+                app:layout_constraintTop_toBottomOf="@id/autumnTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Quote Box 1 -->
+            <FrameLayout
+                android:id="@+id/quoteContainer1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/dialog_background"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/signalFade">
+
+                <TextView
+                    android:id="@+id/quoteText1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/home_video"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+            </FrameLayout>
+
+            <!-- Quote Box 2 -->
+            <FrameLayout
+                android:id="@+id/quoteContainer2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/dialog_background"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/quoteContainer1">
+
+                <TextView
+                    android:id="@+id/quoteText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/home_video"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+            </FrameLayout>
+
+            <!-- Buttons -->
+            <LinearLayout
+                android:id="@+id/buttonLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="80dp"
+                android:visibility="gone"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/btnChoice1"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/choice_button_background"
+                    android:fontFamily="@font/home_video"
+                    android:gravity="center"
+                    android:text="@string/choice_1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/btnChoice2"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/choice_button_background"
+                    android:fontFamily="@font/home_video"
+                    android:gravity="center"
+                    android:text="@string/choice_2"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/btnChoice3"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/choice_button_background"
+                    android:fontFamily="@font/home_video"
+                    android:gravity="center"
+                    android:text="@string/choice_3"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Include your 7 fragment layouts -->
+        <include layout="@layout/fragment_shift_view"/>
+        <include layout="@layout/fragment_shift_view_2"/>
+        <include layout="@layout/fragment_shift_view_3"/>
+        <include layout="@layout/fragment_shift_view_4"/>
+        <include layout="@layout/fragment_shift_view_5"/>
+        <include layout="@layout/fragment_shift_view_6"/>
+        <include layout="@layout/fragment_shift_view_restored"/>
+
+    </ViewFlipper>
+</androidx.constraintlayout.widget.ConstraintLayout>

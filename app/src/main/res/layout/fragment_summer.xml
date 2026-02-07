@@ -59,7 +59,7 @@
 
     <FrameLayout
         android:id="@+id/questionBox1"
-        android:layout_width="333dp"
+        android:layout_width="300dp"
         android:layout_height="64dp"
         android:layout_marginTop="60dp"
         android:background="@drawable/dialog_background"
@@ -77,25 +77,26 @@
             android:text=""
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
     </FrameLayout>
 
     <ImageView
         android:id="@+id/catImage"
         android:layout_width="87dp"
         android:layout_height="87dp"
+        android:layout_marginEnd="10dp"
         android:elevation="2dp"
         android:scaleX="-1"
         android:src="@drawable/pet_cat"
         app:layout_constraintBottom_toTopOf="@+id/questionBox2"
         app:layout_constraintEnd_toEndOf="@+id/questionBox2"
         app:layout_constraintTop_toTopOf="@+id/questionBox2"
-        android:layout_marginEnd="10dp" />
+        app:layout_constraintVertical_bias="0.609" />
 
     <FrameLayout
         android:id="@+id/questionBox2"
-        android:layout_width="342dp"
-        android:layout_height="89dp"
+        android:layout_width="300dp"
+        android:layout_height="64dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/dialog_background"
         android:paddingHorizontal="46dp"
@@ -112,51 +113,54 @@
             android:text=""
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/choicesContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="112dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/choice1"
-            android:layout_width="341dp"
-            android:layout_height="87dp"
-            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/choice_button_background"
             android:fontFamily="@font/home_video"
             android:gravity="center"
             android:text="EVERYTHING FEELS TOO LOUD."
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/choice2"
-            android:layout_width="341dp"
-            android:layout_height="87dp"
-            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/choice_button_background"
             android:fontFamily="@font/home_video"
             android:gravity="center"
             android:text="I CANNOT FOCUS ANYMORE."
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/choice3"
-            android:layout_width="341dp"
-            android:layout_height="87dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:background="@drawable/choice_button_background"
             android:fontFamily="@font/home_video"
             android:gravity="center"
             android:text="I NEED SOME SPACE FROM THE NOISE."
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

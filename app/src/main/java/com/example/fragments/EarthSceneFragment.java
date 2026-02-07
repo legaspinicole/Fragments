@@ -106,41 +106,49 @@ public class EarthSceneFragment extends Fragment {
                         rotationAnimator.setInterpolator(new LinearInterpolator());
                         rotationAnimator.setDuration(8000); // 8 seconds for slower rotation
                         rotationAnimator.start();
+
+                        // Earth hovers upward
+                        ObjectAnimator hoverUp = ObjectAnimator.ofFloat(earthImage, "translationY", 0f, -60f);
+                        hoverUp.setDuration(1500);
+                        hoverUp.setInterpolator(new AccelerateDecelerateInterpolator());
+                        hoverUp.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                // Dialogue fades in after earth hovers up
+                                dialogueContainer.setVisibility(View.VISIBLE);
+                                ObjectAnimator fadeIn = ObjectAnimator.ofFloat(dialogueContainer, "alpha", 0f, 1f);
+                                fadeIn.setDuration(1500); // Slower fade-in for dialogue
+                                fadeIn.addListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        // KIBO dialogue is already showing from XML
+                                        // Wait 2 seconds then transition to LUMA
+                                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                            // Fade out text and speaker
+                                            dialogueText.animate().alpha(0f).setDuration(600).start();
+                                            speakerName.animate().alpha(0f).setDuration(600).withEndAction(() -> {
+                                                // Switch to LUMA
+                                                speakerName.setText("-LUMA");
+                                                speakerName.setTextColor(0xFF90EE90);
+                                                dialogueText.setText("\"SOMETHING'S WRONG...\"");
+
+                                                // Fade in new dialogue
+                                                dialogueText.setAlpha(1f);
+                                                speakerName.setAlpha(0f);
+                                                speakerName.animate().alpha(1f).setDuration(800).withEndAction(() -> {
+                                                    startGrayscaleAndFadeOut();
+                                                }).start();
+                                            }).start();
+                                        }, 2000);
+                                    }
+                                });
+                                fadeIn.start();
+                            }
+                        });
+                        hoverUp.start();
                     }
                 });
                 earthIntro.start();
-
-                // 3. Dialogue appears after 4 seconds (KIBO speaking)
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    dialogueContainer.setVisibility(View.VISIBLE);
-                    ObjectAnimator fadeIn = ObjectAnimator.ofFloat(dialogueContainer, "alpha", 0f, 1f);
-                    fadeIn.setDuration(1500); // Slower fade-in for dialogue
-                    fadeIn.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            // KIBO dialogue is already showing from XML
-                            // Wait 2 seconds then transition to LUMA
-                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                // Fade out text and speaker
-                                dialogueText.animate().alpha(0f).setDuration(600).start();
-                                speakerName.animate().alpha(0f).setDuration(600).withEndAction(() -> {
-                                    // Switch to LUMA
-                                    speakerName.setText("-LUMA");
-                                    speakerName.setTextColor(0xFF90EE90);
-                                    dialogueText.setText("\"SOMETHING'S WRONG...\"");
-
-                                    // Fade in new dialogue
-                                    dialogueText.setAlpha(1f);
-                                    speakerName.setAlpha(0f);
-                                    speakerName.animate().alpha(1f).setDuration(800).withEndAction(() -> {
-                                        startGrayscaleAndFadeOut();
-                                    }).start();
-                                }).start();
-                            }, 2000);
-                        }
-                    });
-                    fadeIn.start();
-                }, 4000);
             }
         }).start();
     }
