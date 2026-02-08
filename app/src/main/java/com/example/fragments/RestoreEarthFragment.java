@@ -18,7 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
+import android.view.animation.PathInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -316,8 +316,14 @@ public class RestoreEarthFragment extends Fragment {
     }
 
     private void goToSpring() {
-        SpringFragment springFragment = new SpringFragment();
-        springFragment.show(getParentFragmentManager(), "SpringPopup");
+        if (getActivity() != null) {
+            SpringFragment springFragment = new SpringFragment();
+            androidx.fragment.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            transaction.replace(R.id.fragment_container, springFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     public void incrementFragmentCounter() {
@@ -347,7 +353,7 @@ public class RestoreEarthFragment extends Fragment {
             kiboCharacter.animate()
                     .alpha(1f)
                     .setDuration(800)
-                    .withEndAction(() -> startFloatingAnimation(kiboCharacter, true))
+                    .withEndAction(() -> startFloatingAnimation(kiboCharacter, true, 0))
                     .start();
         }
 
@@ -374,7 +380,7 @@ public class RestoreEarthFragment extends Fragment {
             lumaCharacter.animate()
                     .alpha(1f)
                     .setDuration(800)
-                    .withEndAction(() -> startFloatingAnimation(lumaCharacter, false))
+                    .withEndAction(() -> startFloatingAnimation(lumaCharacter, false, 500))
                     .start();
         }
 
@@ -497,14 +503,19 @@ public class RestoreEarthFragment extends Fragment {
     }
 
 
-    private void startFloatingAnimation(View view, boolean isKibo) {
+    private void startFloatingAnimation(View view, boolean isKibo, long delay) {
         float startY = isKibo ? 0f : -20f;
         float endY = isKibo ? -20f : 0f;
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, startY, endY);
-        animator.setDuration(1500);
+        animator.setDuration(2200);
+        animator.setStartDelay(delay);
         animator.setRepeatMode(ValueAnimator.REVERSE);
         animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setInterpolator(new LinearInterpolator());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            animator.setInterpolator(new PathInterpolator(0.42f, 0f, 0.58f, 1f));
+        } else {
+            animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        }
         animator.start();
     }
 

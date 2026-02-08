@@ -1,35 +1,37 @@
 package com.example.fragments;
 
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 
-public class RestoredScene extends Fragment {
+public class SpringRestoredFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_spring_restored, container, false);
 
-        ImageView egg = view.findViewById(R.id.egg_image);
-        RotateAnimation rotate = new RotateAnimation(-15, 15, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(1500);
-        rotate.setInterpolator(new AccelerateDecelerateInterpolator());
-        rotate.setRepeatCount(Animation.INFINITE);
-        rotate.setRepeatMode(Animation.REVERSE);
-        egg.startAnimation(rotate);
+        ImageView eggImage = view.findViewById(R.id.egg_image);
+        
+        // Programmatically set the animation
+        // AnimationDrawable eggAnimation = (AnimationDrawable) AppCompatResources.getDrawable(getContext(), R.drawable.egg_spin_animation);
+        // eggImage.setImageDrawable(eggAnimation);
+        //
+        // if (eggAnimation != null) {
+        //    eggAnimation.start();
+        // }
+        eggImage.setImageResource(R.drawable.egg1);
 
         view.setOnClickListener(v -> {
-            if (getParentFragment() != null) {
+            if (getParentFragment() != null && getParentFragment() instanceof SpringFragment) {
                 ((SpringFragment) getParentFragment()).onRestoredFragmentClicked();
             }
         });

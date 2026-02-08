@@ -4,7 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="@drawable/spring_bg">
+
+    <com.example.fragments.MovingCloudsView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.example.fragments.PixelatedButterflyView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/winterTitle"
@@ -25,6 +42,7 @@
 
 
     <LinearLayout
+        android:id="@+id/dialogue_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -38,31 +56,42 @@
         app:layout_constraintVertical_bias="0.425">
 
 
-        <TextView
-            android:id="@+id/dogDialogueText"
-            android:layout_width="333dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/dialog_background"
-            android:fontFamily="@font/home_video"
-            android:gravity="center"
-            android:padding="20dp"
-            android:text="“THIS PLACE NEEDS TIME TO GROW”"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+        <FrameLayout
+            android:id="@+id/dogDialogueContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/catDialogueText"
-            android:layout_width="333dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/dialog_background"
-            android:fontFamily="@font/home_video"
-            android:gravity="center"
-            android:padding="20dp"
-            android:text="“EVERYTHING FEELS SO QUIET HERE”"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            <TextView
+                android:id="@+id/dogDialogueText"
+                android:layout_width="333dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/dialog_background"
+                android:fontFamily="@font/home_video"
+                android:gravity="center"
+                android:padding="20dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/catDialogueContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/catDialogueText"
+                android:layout_width="333dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/dialog_background"
+                android.fontFamily="@font/home_video"
+                android:gravity="center"
+                android:padding="20dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF" />
+
+        </FrameLayout>
 
 
     </LinearLayout>
@@ -75,7 +104,6 @@
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="80dp"
         android:orientation="vertical"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
