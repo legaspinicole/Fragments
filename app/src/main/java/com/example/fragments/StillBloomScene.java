@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-
 public class StillBloomScene extends Fragment {
 
     private final Handler timerHandler = new Handler(Looper.getMainLooper());
     private ImageView flowerImage;
+    private boolean hasFinished = false;
 
     @Nullable
     @Override
@@ -25,6 +25,9 @@ public class StillBloomScene extends Fragment {
         View view = inflater.inflate(R.layout.fragment_spring_activity, container, false);
 
         flowerImage = view.findViewById(R.id.flowerImage);
+
+        // Allow user to click to skip animation
+        view.setOnClickListener(v -> finishScene());
 
         // 1. Start the 30-second timer immediately upon entering the screen
         timerHandler.postDelayed(() -> {
@@ -68,9 +71,14 @@ public class StillBloomScene extends Fragment {
 
 
     private void finishScene() {
-        if (getActivity() instanceof SpringFragment) {
+        if (hasFinished) return; // Prevent this from being called multiple times
+        hasFinished = true;
+
+        timerHandler.removeCallbacksAndMessages(null);
+
+        if (isAdded() && getParentFragment() != null && getParentFragment() instanceof SpringFragment) {
             // Move to the final screen (Picture 4)
-            ((SpringFragment) getActivity()).showRestoredScene();
+            ((SpringFragment) getParentFragment()).showRestoredScene();
         }
     }
 
@@ -81,4 +89,3 @@ public class StillBloomScene extends Fragment {
         timerHandler.removeCallbacksAndMessages(null);
     }
 }
-
