@@ -1,5 +1,7 @@
 package com.example.fragments;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,8 +9,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,6 +48,10 @@ public class WinterFragment extends Fragment {
 
         catDialogue = view.findViewById(R.id.catDialogueText);
 
+        petDog = view.findViewById(R.id.dogImage);
+
+        petCat = view.findViewById(R.id.catImage);
+
         choicesLayout = view.findViewById(R.id.buttonLayout);
 
 
@@ -55,7 +60,9 @@ public class WinterFragment extends Fragment {
 
         catDialogue.setVisibility(View.INVISIBLE);
 
-        if (petCat != null) petCat.setVisibility(View.INVISIBLE);
+        if (petCat != null) petCat.setAlpha(0f);
+
+        if (petDog != null) petDog.setAlpha(0f);
 
         choicesLayout.setVisibility(View.INVISIBLE);
 
@@ -85,15 +92,18 @@ public class WinterFragment extends Fragment {
 
 
 
-// 1. Dog starts floating immediately
+// 1. Dog fades in and starts floating immediately
 
-        startFloatingAnimation(petDog);
+        if (petDog != null) {
+            petDog.animate().alpha(1f).setDuration(600).start();
+            animatePet(petDog);
+        }
 
 
 
 // 2. Dog starts typing its dialogue
 
-        typeText(dogDialogue, "“SMALL CHOICES. NO PRESSURE.”", () -> {
+        typeText(dogDialogue, "“SMALL CHOICES. NO PRESSURE.“", () -> {
 
 
 
@@ -103,9 +113,9 @@ public class WinterFragment extends Fragment {
 
                 if (petCat != null) {
 
-                    petCat.setVisibility(View.VISIBLE);
+                    petCat.animate().alpha(1f).setDuration(600).start();
 
-                    startFloatingAnimation(petCat); // Cat starts floating when it appears
+                    animatePet(petCat); // Cat starts floating when it appears
 
                 }
 
@@ -137,22 +147,14 @@ public class WinterFragment extends Fragment {
 
 
 
-    private void startFloatingAnimation(View view) {
-
+    private void animatePet(View view) {
         if (view == null) return;
-
-// Animation moves up 30 pixels and reverses forever
-
-        TranslateAnimation floatAnim = new TranslateAnimation(0, 0, 0, -30);
-
-        floatAnim.setDuration(1000);
-
-        floatAnim.setRepeatCount(Animation.INFINITE);
-
-        floatAnim.setRepeatMode(Animation.REVERSE);
-
-        view.startAnimation(floatAnim);
-
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, -20f);
+        animator.setDuration(1500);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
     }
 
 

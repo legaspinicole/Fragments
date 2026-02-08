@@ -29,6 +29,10 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 
 public class RestoreEarthFragment extends Fragment {
@@ -127,6 +131,9 @@ public class RestoreEarthFragment extends Fragment {
         // Start white flash animation
         startWhiteFlash(view);
 
+        // Hide system bars
+        hideSystemBars();
+
         return view;
     }
 
@@ -134,6 +141,11 @@ public class RestoreEarthFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadProgressFromPrefs();
+        // Configure the window
+        if (getActivity() != null) {
+            WindowCompat.setDecorFitsSystemWindows(getActivity().getWindow(), false);
+        }
+        hideSystemBars();
     }
 
     @Override
@@ -316,8 +328,10 @@ public class RestoreEarthFragment extends Fragment {
     }
 
     private void goToSpring() {
-        SpringFragment springFragment = new SpringFragment();
-        springFragment.show(getParentFragmentManager(), "SpringPopup");
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), SpringFragment.class);
+            getActivity().startActivity(intent);
+        }
     }
 
     public void incrementFragmentCounter() {
@@ -359,7 +373,7 @@ public class RestoreEarthFragment extends Fragment {
                     .setDuration(800)
                     .withEndAction(() -> {
                         // Start typing KIBO's dialogue
-                        typeKiboDialogue("IT LOOKS BETTER... CALMER.");
+                        typeKiboDialogue("“IT LOOKS BETTER... CALMER.“");
                         // Auto-advance to LUMA's dialogue after KIBO's text finishes + delay
                         typingHandler.postDelayed(() -> showLumaDialogue(), 1800);
                     })
@@ -385,7 +399,7 @@ public class RestoreEarthFragment extends Fragment {
                     .alpha(1f)
                     .setDuration(800)
                     .withEndAction(() -> {
-                        typeLumaDialogue("BECAUSE YOU GAVE IT SPACE TO HEAL.");
+                        typeLumaDialogue("“BECAUSE YOU GAVE IT SPACE TO HEAL.“");
                         // Wait for typing to finish, then wait 3 seconds before fading out
                         typingHandler.postDelayed(() -> fadeOutDialoguesAndTransition(), 2200 + 3000);
                     })
@@ -515,7 +529,7 @@ public class RestoreEarthFragment extends Fragment {
             finalDialogueContainer.animate()
                     .alpha(1f)
                     .setDuration(800)
-                    .withEndAction(() -> typeNarratorDialogue("YOU ARE NOT BROKEN. YOU ARE JUST RESETTING."))
+                    .withEndAction(() -> typeNarratorDialogue("“YOU ARE NOT BROKEN. YOU ARE JUST RESETTING.“"))
                     .start();
         }
 
@@ -554,7 +568,7 @@ public class RestoreEarthFragment extends Fragment {
     private void setupFinalChoiceActions() {
         if (choiceRevisit != null) choiceRevisit.setOnClickListener(v -> goToRestoreEarth());
         if (choiceNewJourney != null) choiceNewJourney.setOnClickListener(v -> goToAppStart());
-        if (choiceStay != null) choiceStay.setOnClickListener(v -> {});  // Do nothing
+        if (choiceStay != null) choiceStay.setOnClickListener(v -> goToStayHere());
     }
 
     private void goToRestoreEarth() {
@@ -572,6 +586,15 @@ public class RestoreEarthFragment extends Fragment {
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
             getActivity().finish();
+        }
+    }
+
+    private void goToStayHere() {
+        if (getActivity() != null) {
+            androidx.fragment.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            transaction.replace(R.id.fragment_container, new StayHereFragment());
+            transaction.commit();
         }
     }
 
@@ -680,6 +703,20 @@ public class RestoreEarthFragment extends Fragment {
         restoreEarthButton.setVisibility(fragmentsRestored == 4 ? View.VISIBLE : View.GONE);
     }
 
+    private void hideSystemBars() {
+        if (getActivity() == null) return;
+        WindowInsetsControllerCompat windowInsetsController =
+                ViewCompat.getWindowInsetsController(getActivity().getWindow().getDecorView());
+        if (windowInsetsController == null) {
+            return;
+        }
+        // Hide the system bars.
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+        // Configure the behavior for showing the system bars.
+        windowInsetsController.setSystemBarsBehavior(
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+    }
+
     private void setupRestoreButtonStyle() {
         if (restoreEarthButton == null) return;
         float density = getResources().getDisplayMetrics().density;
@@ -696,6 +733,9 @@ public class RestoreEarthFragment extends Fragment {
     private void startRestoreAnimation() {
         View rootView = getView();
         if (rootView == null || getContext() == null) return;
+
+        // Ensure system bars stay hidden during animation
+        hideSystemBars();
 
         // Hide all UI elements immediately
         if (titleText != null) titleText.setVisibility(View.GONE);
@@ -735,6 +775,9 @@ public class RestoreEarthFragment extends Fragment {
     }
 
     private void startEarthRestoreSequence() {
+        // Ensure system bars stay hidden
+        hideSystemBars();
+
         // Hide reveal layers
         earthSpringReveal.setVisibility(View.GONE);
         earthSummerReveal.setVisibility(View.GONE);

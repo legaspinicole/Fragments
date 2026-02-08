@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/home_video"
-                android:text="&quot;IT LOOKS BETTER... CALMER.&quot;"
+                android:text=" "
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/home_video"
-                android:text="&quot;BECAUSE YOU GAVE IT SPACE TO HEAL.&quot;"
+                android:text=" "
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/home_video"
-                android:text="YOU ARE NOT BROKEN. YOU ARE JUST RESETTING."
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />

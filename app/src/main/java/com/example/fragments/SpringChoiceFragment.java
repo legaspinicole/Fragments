@@ -10,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 
 public class SpringChoiceFragment extends Fragment {
@@ -21,6 +24,7 @@ public class SpringChoiceFragment extends Fragment {
     private final Handler typingHandler = new Handler(Looper.getMainLooper());
     private Runnable typingRunnable;
     private MediaPlayer typingPlayer;
+    private ImageView petDog, petCat;
 
     public interface OnTypeFinishListener {
         void onFinished();
@@ -34,10 +38,21 @@ public class SpringChoiceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_spring_choice, container, false);
 
+        // Configure the window to not fit system windows
+        if (getActivity() != null) {
+            WindowCompat.setDecorFitsSystemWindows(getActivity().getWindow(), false);
+        }
+
 
         TextView dogDialogue = view.findViewById(R.id.dogDialogueText);
         TextView catDialogue = view.findViewById(R.id.catDialogueText);
         View choicesLayout = view.findViewById(R.id.buttonLayout);
+        petDog = view.findViewById(R.id.dogImage);
+        petCat = view.findViewById(R.id.catImage);
+
+        // Set pets to invisible initially
+        if (petDog != null) petDog.setAlpha(0f);
+        if (petCat != null) petCat.setAlpha(0f);
 
 
         View choice1 = view.findViewById(R.id.btnChoice1);
@@ -60,12 +75,20 @@ public class SpringChoiceFragment extends Fragment {
 
         catDialogue.setVisibility(View.INVISIBLE);
         choicesLayout.setVisibility(View.INVISIBLE);
-
+        // Fade in dog at the same time as typing starts
+        if (petDog != null) {
+            petDog.animate().alpha(1f).setDuration(600).start();
+            animatePet(petDog);
+        }
         typeText(dogDialogue, "“THIS PLACE NEEDS TIME TO GROW.”", () -> {
             typingHandler.postDelayed(() -> {
-
+                // Fade in cat at the same time as dialogue appears
+                if (petCat != null) {
+                    petCat.animate().alpha(1f).setDuration(600).start();
+                    animatePet(petCat);
+                }
                 catDialogue.setVisibility(View.VISIBLE);
-                typeText(catDialogue, "“EVERYTHING FEELS SO QUIET HERE...”", () -> {
+                typeText(catDialogue, "”EVERYTHING FEELS SO QUIET HERE...”", () -> {
                     typingHandler.postDelayed(() -> {
                         choicesLayout.setVisibility(View.VISIBLE);
                         choicesLayout.setAlpha(0f);
@@ -77,22 +100,20 @@ public class SpringChoiceFragment extends Fragment {
         return view;
     }
 
-    private void startFloatingAnimation(View view, int delay, int duration) {
+    private void animatePet(View view) {
         if (view == null) return;
-
-        ObjectAnimator floatAnim = ObjectAnimator.ofFloat(view, "translationY", 0, -20f, 0f);
-        floatAnim.setDuration(duration);
-        floatAnim.setStartDelay(delay);
-        floatAnim.setRepeatCount(ValueAnimator.INFINITE);
-        floatAnim.setRepeatMode(ValueAnimator.REVERSE);
-        floatAnim.setInterpolator(new AccelerateDecelerateInterpolator());
-        floatAnim.start();
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, -20f);
+        animator.setDuration(1500);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
     }
 
     private void navigateToPictureTwo() {
-        if (getParentFragment() != null && getParentFragment() instanceof SpringFragment) {
+        if (getActivity() != null && getActivity() instanceof SpringFragment) {
             // We call a method in SpringFragment to handle the fragment swap
-            ((SpringFragment) getParentFragment()).showStillBloomScene();
+            ((SpringFragment) getActivity()).showStillBloomScene();
         }
     }
     private void typeText(TextView target, String text, OnTypeFinishListener listener) {

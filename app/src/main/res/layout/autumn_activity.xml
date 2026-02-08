@@ -83,6 +83,17 @@
             </FrameLayout>
 
             <!-- Quote Box 2 -->
+            <ImageView
+                android:id="@+id/dogImage"
+                android:layout_width="81dp"
+                android:layout_height="81dp"
+                android:elevation="2dp"
+                android:src="@drawable/pet_dog"
+                app:layout_constraintBottom_toTopOf="@+id/quoteContainer1"
+                app:layout_constraintStart_toStartOf="@+id/quoteContainer1"
+                app:layout_constraintTop_toTopOf="@+id/quoteContainer1"
+                android:layout_marginStart="-10dp" />
+
             <FrameLayout
                 android:id="@+id/quoteContainer2"
                 android:layout_width="0dp"
@@ -108,6 +119,19 @@
                     android:textColor="#FFFFFF"
                     android:textSize="18sp" />
             </FrameLayout>
+
+            <ImageView
+                android:id="@+id/catImage"
+                android:layout_width="87dp"
+                android:layout_height="87dp"
+                android:layout_marginEnd="-15dp"
+                android:elevation="2dp"
+                android:scaleX="-1"
+                android:src="@drawable/pet_cat"
+                app:layout_constraintBottom_toTopOf="@+id/quoteContainer2"
+                app:layout_constraintEnd_toEndOf="@+id/quoteContainer2"
+                app:layout_constraintTop_toTopOf="@+id/quoteContainer2"
+                app:layout_constraintVertical_bias="0.609" />
 
             <!-- Buttons -->
             <LinearLayout

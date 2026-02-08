@@ -16,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.349">
 
         <ImageView
             android:id="@+id/eggImage"
@@ -27,14 +28,20 @@
 
         <TextView
             android:id="@+id/springRestoredText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/home_video"
             android:gravity="center"
-            android:lineSpacingExtra="8dp"
-            android:text=" SPRING \n FRAGMENT \n RESTORED"
+            android:lineSpacingExtra="14dp"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:shadowColor="#000000"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="0.01"
+            android:text="WINTER\nFRAGMENT\nRESTORED"
             android:textColor="#FFFFFF"
-            android:textSize="32sp" />
+            android:textSize="28sp" />
 
     </LinearLayout>
 

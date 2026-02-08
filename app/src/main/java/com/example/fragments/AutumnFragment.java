@@ -38,6 +38,7 @@ public class AutumnFragment extends Fragment {
 
     private View quoteContainer1, quoteContainer2, buttonLayout;
     private TextView quoteText1, quoteText2;
+    private ImageView petDog, petCat;
     private final List<ImageView> activeLeaves = new ArrayList<>();
 
     @Nullable
@@ -68,8 +69,10 @@ public class AutumnFragment extends Fragment {
         buttonLayout = view.findViewById(R.id.buttonLayout);
         quoteText1 = view.findViewById(R.id.quoteText1);
         quoteText2 = view.findViewById(R.id.quoteText2);
+        petDog = view.findViewById(R.id.dogImage);
+        petCat = view.findViewById(R.id.catImage);
 
-        // Start dialogue boxes hidden so they pop in like Summer
+        // Start dialogue boxes and pets hidden so they pop in
         if (quoteContainer1 != null) {
             quoteContainer1.setAlpha(0f);
             quoteContainer1.setScaleX(0f);
@@ -82,6 +85,8 @@ public class AutumnFragment extends Fragment {
             quoteContainer2.setScaleY(0f);
             quoteContainer2.setVisibility(View.INVISIBLE);
         }
+        if (petDog != null) petDog.setAlpha(0f);
+        if (petCat != null) petCat.setAlpha(0f);
 
         // Spawn multiple leaves
         for (int i = 0; i < 15; i++) {
@@ -124,8 +129,12 @@ public class AutumnFragment extends Fragment {
         TextView quoteText2 = view.findViewById(R.id.quoteText2);
 
         if (quoteText1 != null && quoteText2 != null) {
-            // STEP 1: Box 1 Pop In
+            // STEP 1: Dog fades in and Box 1 Pop In simultaneously
             typingHandler.postDelayed(() -> {
+                if (petDog != null) {
+                    petDog.animate().alpha(1f).setDuration(600).start();
+                    animatePet(petDog);
+                }
                 if (box1 != null) {
                     box1.setAlpha(0f);
                     box1.animate().alpha(1f).setDuration(300).start();
@@ -138,7 +147,11 @@ public class AutumnFragment extends Fragment {
                         stopTypingSfx(); // Stop typing sound after first dialogue
                         // STEP 2: Wait 0.5s after first quote finishes
                         typingHandler.postDelayed(() -> {
-                            // STEP 3: Box 2 Pop In
+                            // STEP 3: Cat fades in and Box 2 Pop In simultaneously
+                            if (petCat != null) {
+                                petCat.animate().alpha(1f).setDuration(600).start();
+                                animatePet(petCat);
+                            }
                             if (box2 != null) {
                                 box2.setAlpha(0f);
                                 box2.animate().alpha(1f).setDuration(300).start();
@@ -218,15 +231,14 @@ public class AutumnFragment extends Fragment {
         }
     }
 
-    private void startFloating(ImageView image, int delayMs) {
-        if (image == null) return;
-        image.postDelayed(() -> {
-            ObjectAnimator floatAnim = ObjectAnimator.ofFloat(image, "translationY", 0f, -20f);
-            floatAnim.setDuration(1000);
-            floatAnim.setRepeatCount(ValueAnimator.INFINITE);
-            floatAnim.setRepeatMode(ValueAnimator.REVERSE);
-            floatAnim.start();
-        }, delayMs);
+    private void animatePet(View view) {
+        if (view == null) return;
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, -20f);
+        animator.setDuration(1500);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
     }
 
     private void spawnLeaf() {
