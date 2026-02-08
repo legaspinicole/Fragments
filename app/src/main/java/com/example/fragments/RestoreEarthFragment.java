@@ -316,17 +316,8 @@ public class RestoreEarthFragment extends Fragment {
     }
 
     private void goToSpring() {
-        if (getActivity() != null) {
-            MinigameFragment minigameFragment = new MinigameFragment();
-            Bundle args = new Bundle();
-            args.putString("season", "Spring");
-            minigameFragment.setArguments(args);
-            androidx.fragment.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-            transaction.replace(R.id.fragment_container, minigameFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
+        SpringFragment springFragment = new SpringFragment();
+        springFragment.show(getParentFragmentManager(), "SpringPopup");
     }
 
     public void incrementFragmentCounter() {
@@ -872,3 +863,5 @@ public class RestoreEarthFragment extends Fragment {
         }
     }
 }
+
+
